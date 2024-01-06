@@ -22,7 +22,7 @@ const thisGame = new DemoGame()
 console.log(thisGame)
 const env = new GamePack(socket, thisGame)
 
-socket.on('connection', client => {
+socket.on('connection', (client: any) => {
   alert('connection')
 })
 
