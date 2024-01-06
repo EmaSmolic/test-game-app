@@ -22,6 +22,10 @@ const thisGame = new DemoGame()
 console.log(thisGame)
 const env = new GamePack(socket, thisGame)
 
+socket.on('connection', client => {
+  alert('connection')
+})
+
 app.get('/', function (_req: any, res: { sendFile: (arg0: string) => void; }) {
   res.sendFile(path.join(__dirname, './', '/gameSimulator.html'));
 });
