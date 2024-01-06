@@ -2,6 +2,8 @@ import { Game, GamePack } from '../gamePack';
 import { DemoGame } from './DemoGame'
 
 const app = require("express")();
+const path = require('node:path'); 
+
 /*
 var cors = require("cors");
 const corsOptions = {
@@ -21,7 +23,7 @@ console.log(thisGame)
 const env = new GamePack(socket, thisGame)
 
 app.get('/', function (_req: any, res: { sendFile: (arg0: string) => void; }) {
-  res.sendFile('/home/ema/Desktop/social_game_ifc/code/pong-server/src/simulators/gameSimulator.html');
+  res.sendFile(path.join(__dirname, './', 'simulators/gameSimulator.html'));
 });
 
 http.listen(8000);
