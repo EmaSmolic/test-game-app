@@ -16,7 +16,8 @@ app.use(cors());
 */
 
 var http = require("http").createServer(app);
-const socket = require("socket.io")(http);
+const socket = require("socket.io").listen(http);
+socket.set('transports', [ 'websocket' ]);
 
 const thisGame = new DemoGame()
 console.log(thisGame)
@@ -30,4 +31,3 @@ app.get('/', function (_req: any, res: { sendFile: (arg0: string) => void; }) {
   res.sendFile(path.join(__dirname, './', '/gameSimulator.html'));
 });
 
-http.listen(8000);
