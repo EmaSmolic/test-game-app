@@ -21,6 +21,7 @@ const socket = require("socket.io")(http);
 const thisGame = new DemoGame()
 console.log(thisGame)
 const env = new GamePack(socket, thisGame)
+socket.connect('https://test-kontroler.onrender.com/')
 
 socket.on('connection', (client: any) => {
   socket.emit('hello')
