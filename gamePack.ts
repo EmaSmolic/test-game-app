@@ -1,25 +1,31 @@
 import { Socket } from 'socket.io';
+  import { io } from "socket.io-client";
+import { DefaultEventsMap } from 'socket.io/dist/typed-events';
+import { ServerToClientEvents, ClientToServerEvents } from './simulators/DemoGame';
+
 export class GamePack {
   private readonly socket: Socket;
   private readonly game: Game;
   private controllers: Array<Controller>
 
-  constructor(socket:Socket, game:Game) {
+  constructor(socket: Socket, game: Game) {
     this.socket = socket
     this.game = game
     this.controllers = []
 
-    //subscribe game to socket
+  
+
     this.socket.on('connection', client => {
-      console.log('connection')
-      //client.on('event', data => { /* … */ });
+      console.log('connected', client)
+      
+      //this.socket.to(id).emit("my message", msg);
     });
 
     //subscribe to controller web service opening
   }
 
   //returns true if controller connected, false in case of controller rejection
-  private onControllerServiceOpened() : Boolean {
+  private onControllerServiceOpened(): Boolean {
     //return if rejected
     if (!this.game.acceptNewController(this)) return false
 
@@ -40,20 +46,27 @@ export class GamePack {
 }
 
 export abstract class Game {
+  private readonly socket: any
+  constructor() {
+    this.socket = io("https://test-igrica.onrender.com/")
+    console.log('game client socket', this.socket)
+  }
 
+  public getSocket(): Socket { return this.socket }
+  
   //commonly waiting for the required number of controllers registered, maybe something else...
-  public abstract checkStartCondition(gamePackContext : GamePack) : Boolean
-  public abstract acceptNewController(gamePackContext : GamePack) : Boolean
-  public abstract generateTid(gamePackContext : GamePack) : string
+  public abstract checkStartCondition(gamePackContext: GamePack): Boolean
+  public abstract acceptNewController(gamePackContext: GamePack): Boolean
+  public abstract generateTid(gamePackContext: GamePack): string
 
 
 }
 
 class Controller {
   //temporary one-time id for a specific game run instance
-  public readonly tid : string
+  public readonly tid: string
 
-  public constructor(tid : string) {
+  public constructor(tid: string) {
     this.tid = tid
   }
 
