@@ -16,9 +16,12 @@ app.use(cors());
 */
 
 var http = require("http").createServer(app);
-const socket = require("socket.io")(http);
-socket.set('transports', [ 'websocket' ]);
+//HTTP Server 
+var server = require('http').createServer(app).listen(8888);
+var socket = require('socket.io').listen(server);
 
+//Allow Cross Domain Requests
+socket.set('transports', [ 'websocket' ]);
 const thisGame = new DemoGame()
 console.log(thisGame)
 const env = new GamePack(socket, thisGame)
