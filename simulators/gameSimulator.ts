@@ -15,10 +15,9 @@ app.use(cors(corsOptions));
 app.use(cors());
 */
 
-var http = require("http").createServer(app);
 //HTTP Server 
 var server = require('http').createServer(app).listen(8888);
-var socket = require('socket.io').listen(server);
+var socket = require('socket.io')(server)
 
 //Allow Cross Domain Requests
 socket.set('transports', [ 'websocket' ]);
