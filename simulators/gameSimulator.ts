@@ -16,12 +16,11 @@ app.use(cors());
 */
 
 var http = require("http").createServer(app);
-const { socket } = require("socket.io-client")(http);
+const socket = require("socket.io")(http);
 
 const thisGame = new DemoGame()
 console.log(thisGame)
 const env = new GamePack(socket, thisGame)
-socket.connect('https://test-kontroler.onrender.com/')
 
 socket.on('connection', (client: any) => {
   socket.emit('hello')
