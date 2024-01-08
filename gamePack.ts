@@ -48,7 +48,7 @@ export class GamePack {
 export abstract class Game {
   private readonly socket: any
   constructor() {
-    this.socket = io("https://test-igrica.onrender.com/")
+    this.socket = io("https://test-igrica.onrender.com/", { transports: ["websocket"] })
     console.log('game client socket', this.socket)
   }
 
