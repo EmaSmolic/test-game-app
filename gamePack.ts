@@ -13,8 +13,12 @@ export class GamePack {
     this.game = game
     this.controllers = []
 
-  
-
+    this.game.setSocket(io("https://test-igrica.onrender.com/", {
+      reconnectionAttempts:10000, //avoid having user reconnect manually in order to prevent dead clients after a server restart
+      timeout: 10000, //before connect_error and connect_timeout are emitted.
+      transports: ["websocket"],
+    }))
+console.log('game socket set', this.game.getSocket())
     this.serverSocket.on('connection', client => {
       console.log('connected', client)
       this.serverSocket.sockets.emit("hi", "everyone");
@@ -47,14 +51,15 @@ export class GamePack {
 }
 
 export abstract class Game {
-  private readonly socket: any
+  private clientSocket: any
   constructor() {
     //this.socket = io("https://test-igrica.onrender.com/", { transports: ["websocket"] })
     //console.log('game client socket', this.socket)
   }
 
-  public getSocket(): Socket { return this.socket }
-  
+  public getSocket(): Socket<DefaultEventsMap, DefaultEventsMap> { return this.clientSocket }
+  public setSocket(clientSocket : any): void { this.clientSocket = clientSocket}
+
   //commonly waiting for the required number of controllers registered, maybe something else...
   public abstract checkStartCondition(gamePackContext: GamePack): Boolean
   public abstract acceptNewController(gamePackContext: GamePack): Boolean
