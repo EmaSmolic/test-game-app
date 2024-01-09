@@ -20,7 +20,6 @@ app.use(cors());
 var server = require('http').createServer(app)
 
 const thisGame = new DemoGame()
-console.log(thisGame)
 const env = new GamePack(server, thisGame)
 
 app.get('/', function (_req: any, res: { sendFile: (arg0: string) => void; }) {
