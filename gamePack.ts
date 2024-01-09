@@ -13,13 +13,6 @@ export class GamePack {
     this.game = game
     this.controllers = []
 
-    //set game socket
-    this.game.setSocket(io("https://test-igrica.onrender.com/", {
-      reconnectionAttempts:10000, //avoid having user reconnect manually in order to prevent dead clients after a server restart
-      timeout: 10000, //before connect_error and connect_timeout are emitted.
-      transports: ["websocket"],
-    }))
-
     this.serverSocket.on('connection', client => {
       console.log('connected', client)
       this.serverSocket.sockets.emit("hi", "everyone");

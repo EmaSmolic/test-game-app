@@ -1,6 +1,22 @@
+<head>
+  <script type="module">
+    import { io } from "https://cdn.socket.io/4.7.2/socket.io.esm.min.js";
+    var connectionOptions = {
+      "force new connection": true,
+      reconnectionAttempts: "Infinity", //avoid having user reconnect manually in order to prevent dead clients after a server restart
+      timeout: 10000, //before connect_error and connect_timeout are emitted.
+      transports: ["websocket"],
+    };
+
+    var socket = io("https://test-igrica.onrender.com/", connectionOptions);
+
+    socket.on("hi", () => {
+      alert("HELLO");
+    });
+  </script>
+</head>
 <body>
-    <button onclick="window.location.href='https://w3docs.com';">connect as controller</button>
-
-    
-
+  <button onclick="window.location.href='https://w3docs.com';">
+    connect as controller
+  </button>
 </body>
