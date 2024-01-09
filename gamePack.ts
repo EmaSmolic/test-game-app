@@ -1,14 +1,14 @@
-import { Socket } from 'socket.io';
+import { Server, Socket } from 'socket.io';
   import { io } from "socket.io-client";
 import { DefaultEventsMap } from 'socket.io/dist/typed-events';
 import { ServerToClientEvents, ClientToServerEvents } from './simulators/DemoGame';
 
 export class GamePack {
-  private readonly socket: Socket;
+  private readonly socket: Server;
   private readonly game: Game;
   private controllers: Array<Controller>
 
-  constructor(socket: Socket, game: Game) {
+  constructor(socket: Server, game: Game) {
     this.socket = socket
     this.game = game
     this.controllers = []
@@ -17,6 +17,7 @@ export class GamePack {
 
     this.socket.on('connection', client => {
       console.log('connected', client)
+      this.socket.sockets.emit("hi", "everyone");
       
       //this.socket.to(id).emit("my message", msg);
     });
