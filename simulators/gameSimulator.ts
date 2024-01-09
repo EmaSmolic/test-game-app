@@ -18,9 +18,10 @@ app.use(cors());
 
 //HTTP Server 
 var server = require('http').createServer(app)
+var socket = require('socket.io')(server, {'transports': [ 'websocket' ],})
 
 const thisGame = new DemoGame()
-const env = new GamePack(server, thisGame)
+const env = new GamePack(socket, thisGame)
 
 app.get('/', function (_req: any, res: { sendFile: (arg0: string) => void; }) {
   res.sendFile(path.join(__dirname, './', '/gameSimulator.html'));

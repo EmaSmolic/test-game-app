@@ -4,12 +4,12 @@ import { DefaultEventsMap } from 'socket.io/dist/typed-events';
 import { ServerToClientEvents, ClientToServerEvents } from './simulators/DemoGame';
 
 export class GamePack {
-  private readonly serverSocket: Server;
+  private readonly serverSocket: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>;
   private readonly game: Game;
   private controllers: Array<Controller>
 
-  constructor(server: Server, game: Game) {
-    this.serverSocket = require('socket.io')(server, {'transports': [ 'websocket' ],})
+  constructor(serverSocket: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>, game: Game) {
+    this.serverSocket = serverSocket
     this.game = game
     this.controllers = []
 
