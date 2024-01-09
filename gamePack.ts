@@ -4,20 +4,20 @@ import { DefaultEventsMap } from 'socket.io/dist/typed-events';
 import { ServerToClientEvents, ClientToServerEvents } from './simulators/DemoGame';
 
 export class GamePack {
-  private readonly socket: Server;
+  private readonly serverSocket: Server;
   private readonly game: Game;
   private controllers: Array<Controller>
 
-  constructor(socket: Server, game: Game) {
-    this.socket = socket
+  constructor(server: Server, game: Game) {
+    this.serverSocket = require('socket.io')(server, {'transports': [ 'websocket' ],})
     this.game = game
     this.controllers = []
 
   
 
-    this.socket.on('connection', client => {
+    this.serverSocket.on('connection', client => {
       console.log('connected', client)
-      this.socket.sockets.emit("hi", "everyone");
+      this.serverSocket.sockets.emit("hi", "everyone");
       
       //this.socket.to(id).emit("my message", msg);
     });
@@ -49,8 +49,8 @@ export class GamePack {
 export abstract class Game {
   private readonly socket: any
   constructor() {
-    this.socket = io("https://test-igrica.onrender.com/", { transports: ["websocket"] })
-    console.log('game client socket', this.socket)
+    //this.socket = io("https://test-igrica.onrender.com/", { transports: ["websocket"] })
+    //console.log('game client socket', this.socket)
   }
 
   public getSocket(): Socket { return this.socket }
