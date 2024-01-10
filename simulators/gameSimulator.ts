@@ -27,7 +27,7 @@ const gameClient = env.getGameClientSocket()
 
 
 app.get('/', function (_req: any, res: any) {
-  res.append('game_client_socket', JSON.stringify(gameClient))
+  res.append('game_client_socket', gameClient)
   res.sendFile(path.join(__dirname, './', '/gameSimulator.html'));
 });
 
