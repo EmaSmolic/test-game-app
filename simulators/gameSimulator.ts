@@ -1,7 +1,8 @@
 import { GamePack } from '../gamePack';
 import { DemoGame } from './DemoGame'
 
-const app = require("express")();
+const express = require('express')
+const app = express();
 const path = require('node:path'); 
 
 /*
@@ -25,7 +26,8 @@ const thisGame = new DemoGame()
 const env = new GamePack(socket, thisGame)
 const gameClient = env.getGameClientSocket()
 
-app.set('view engine', 'jade');
+app.set('view engine', 'html');
+app.use(express.static(path.join(__dirname, './')));
 app.get('/', function (req: any, res: any) {
   res.render('gameSimulator', {gameClient: gameClient});
 });
