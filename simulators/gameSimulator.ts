@@ -26,7 +26,7 @@ const thisGame = new DemoGame()
 const env = new GamePack(socket, thisGame)
 const gameClient = env.getGameClientSocket()
 
-app.set('view engine', 'html');
+app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, './')));
 app.get('/', function (req: any, res: any) {
   res.render('gameSimulator');
