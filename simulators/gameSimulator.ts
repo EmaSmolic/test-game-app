@@ -23,8 +23,7 @@ var socket = require('socket.io')(server, {'transports': [ 'websocket' ],})
 
 const thisGame = new DemoGame()
 const env = new GamePack(socket, thisGame)
-const gameClient = env.getGameClientSocket()
-gameClient.on('hello_game', () => console.log('Im a game!'))
+export const gameClient = env.getGameClientSocket()
 
 
 app.get('/', function (_req: any, res: { sendFile: (arg0: string) => void; }) {
