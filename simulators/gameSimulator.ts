@@ -25,10 +25,16 @@ const thisGame = new DemoGame()
 const env = new GamePack(socket, thisGame)
 const gameClient = env.getGameClientSocket()
 
-
 app.get('/', function (req: any, res: any) {
-  req.params.client = gameClient
-  res.sendFile(path.join(__dirname, './', '/gameSimulator.html'));
+  let options = {
+    dotfiles: 'deny',
+    headers: {
+      'x-timestamp': Date.now(),
+      'x-sent': true,
+      'x-result-message': thisGame // your custom header here
+    }
+  }
+  res.sendFile(path.join(__dirname, './', '/gameSimulator.html', options));
 });
 
 server.listen(8000)
