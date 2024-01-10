@@ -29,5 +29,5 @@ app.get('/', function (_req: any, res: { sendFile: (arg0: string) => void; }) {
   res.sendFile(path.join(__dirname, './', '/gameSimulator.html'));
 });
 
-export default(gameClient)
+export default {gameClient}
 server.listen(8000)
