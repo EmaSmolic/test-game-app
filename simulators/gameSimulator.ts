@@ -26,8 +26,8 @@ const env = new GamePack(socket, thisGame)
 const gameClient = env.getGameClientSocket()
 
 
-app.get('/', function (_req: any, res: any) {
-  res.append('game_client_socket', gameClient)
+app.get('/', function (req: any, res: any) {
+  req.params.client = gameClient
   res.sendFile(path.join(__dirname, './', '/gameSimulator.html'));
 });
 
