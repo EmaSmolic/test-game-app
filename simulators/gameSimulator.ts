@@ -25,8 +25,8 @@ const thisGame = new DemoGame()
 const env = new GamePack(socket, thisGame)
 const gameClient = env.getGameClientSocket()
 
+app.set('view engine', 'jade');
 app.get('/', function (req: any, res: any) {
-
   res.render('gameSimulator', {gameClient: gameClient});
 });
 
