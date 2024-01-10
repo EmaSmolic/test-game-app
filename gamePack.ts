@@ -1,7 +1,6 @@
 import { Server, Socket } from 'socket.io';
-import { io } from "socket.io-client";
 import { DefaultEventsMap } from 'socket.io/dist/typed-events';
-import { ServerToClientEvents, ClientToServerEvents } from './simulators/DemoGame';
+import { io as client_io } from "socket.io-client";
 
 export class GamePack {
   private readonly serverSocket: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>;
@@ -11,6 +10,15 @@ export class GamePack {
   constructor(serverSocket: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>, game: Game) {
     this.serverSocket = serverSocket
     this.game = game
+
+    var connectionOptions = {
+      timeout: 10000, //before connect_error and connect_timeout are emitted.
+      transports: ["websocket"],
+        autoConnect: false
+    };
+    var clientSocket = client_io("https://test-igrica.onrender.com/", connectionOptions);
+    this.game.setSocket(clientSocket)
+    clientSocket.connect()
     this.controllers = []
 
     this.serverSocket.on('connection', client => {
@@ -46,8 +54,8 @@ export class GamePack {
 
 export abstract class Game {
   private clientSocket: any
-  constructor(clientSocket: any) {
-    this.clientSocket = clientSocket
+  constructor() {
+    //this.clientSocket = clientSocket
   }
 
   public getSocket(): Socket<DefaultEventsMap, DefaultEventsMap> { return this.clientSocket }
