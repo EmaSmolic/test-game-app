@@ -18,7 +18,7 @@ export class GamePack {
     };
     var clientSocket = client_io("https://test-igrica.onrender.com/", connectionOptions);
     this.game.setSocket(clientSocket)
-    console.log('id set?', this.game.getSocket().id)
+    while(!this.game.getSocket().id) {}
     clientSocket.connect()
     this.controllers = []
 
