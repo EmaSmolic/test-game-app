@@ -3,6 +3,7 @@ import { DefaultEventsMap } from 'socket.io/dist/typed-events';
 import { io as client_io } from "socket.io-client";
 
 export class GamePack {
+
   private readonly serverSocket: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>;
   private readonly game: Game;
   private controllers: Array<Controller>
@@ -23,6 +24,10 @@ export class GamePack {
     this.serverSocket.on('connection', client => {
       console.log('connected', client.id)
       console.log(this.game.getSocket().id)
+
+      //if not game socket, do controller acceptabillity check
+      this.serverSocket.in(this.game.getSocket().id).emit('hello_game')
+
       this.serverSocket.sockets.emit("hi", "everyone");
       //this.socket.to(id).emit("my message", msg);
     });
@@ -30,7 +35,10 @@ export class GamePack {
 
     //subscribe to controller web service opening
   }
-
+  
+  getGameClientSocket() {
+    return this.game.getSocket()
+  }
   //returns true if controller connected, false in case of controller rejection
   private onControllerServiceOpened(): Boolean {
     //return if rejected

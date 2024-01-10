@@ -1,6 +1,8 @@
 <head>
   <script type="module">
+import {gameClient} from './gameSimulator'
 
+gameClient.on('hello_game', () => alert('Im a game!'))
   </script>
 </head>
 <body>
