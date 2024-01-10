@@ -23,10 +23,11 @@ var socket = require('socket.io')(server, {'transports': [ 'websocket' ],})
 
 const thisGame = new DemoGame()
 const env = new GamePack(socket, thisGame)
-export const gameClient = env.getGameClientSocket()
+const gameClient = env.getGameClientSocket()
 
 
-app.get('/', function (_req: any, res: { sendFile: (arg0: string) => void; }) {
+app.get('/', function (_req: any, res: any) {
+  res.append('game_client_socket', JSON.stringify(gameClient))
   res.sendFile(path.join(__dirname, './', '/gameSimulator.html'));
 });
 
