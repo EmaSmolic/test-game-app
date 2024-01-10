@@ -18,8 +18,6 @@ export class GamePack {
     };
     var clientSocket = client_io("https://test-igrica.onrender.com/", connectionOptions);
     this.game.setSocket(clientSocket)
-    while(!this.game.getSocket().id) {}
-    clientSocket.connect()
     this.controllers = []
 
     this.serverSocket.on('connection', client => {
@@ -28,6 +26,7 @@ export class GamePack {
       this.serverSocket.sockets.emit("hi", "everyone");
       //this.socket.to(id).emit("my message", msg);
     });
+    clientSocket.connect()
 
     //subscribe to controller web service opening
   }
