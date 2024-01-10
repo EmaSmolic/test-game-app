@@ -14,7 +14,7 @@ export class GamePack {
     this.controllers = []
 
     this.serverSocket.on('connection', client => {
-      console.log('connected', client)
+      console.log('connected', client.id)
       this.serverSocket.sockets.emit("hi", "everyone");
       console.log('sockets',this.serverSocket.sockets)
       //this.socket.to(id).emit("my message", msg);
