@@ -1,5 +1,5 @@
 import { Server, Socket } from 'socket.io';
-  import { io } from "socket.io-client";
+import { io } from "socket.io-client";
 import { DefaultEventsMap } from 'socket.io/dist/typed-events';
 import { ServerToClientEvents, ClientToServerEvents } from './simulators/DemoGame';
 
@@ -15,8 +15,8 @@ export class GamePack {
 
     this.serverSocket.on('connection', client => {
       console.log('connected', client.id)
+      console.log(this.game.getSocket)
       this.serverSocket.sockets.emit("hi", "everyone");
-      console.log('sockets',this.serverSocket.sockets)
       //this.socket.to(id).emit("my message", msg);
     });
 
@@ -46,13 +46,12 @@ export class GamePack {
 
 export abstract class Game {
   private clientSocket: any
-  constructor() {
-    //this.socket = io("https://test-igrica.onrender.com/", { transports: ["websocket"] })
-    //console.log('game client socket', this.socket)
+  constructor(clientSocket: any) {
+    this.clientSocket = clientSocket
   }
 
   public getSocket(): Socket<DefaultEventsMap, DefaultEventsMap> { return this.clientSocket }
-  public setSocket(clientSocket : any): void { this.clientSocket = clientSocket}
+  public setSocket(clientSocket: any): void { this.clientSocket = clientSocket }
 
   //commonly waiting for the required number of controllers registered, maybe something else...
   public abstract checkStartCondition(gamePackContext: GamePack): Boolean

@@ -20,7 +20,19 @@ app.use(cors());
 var server = require('http').createServer(app)
 var socket = require('socket.io')(server, {'transports': [ 'websocket' ],})
 
-const thisGame = new DemoGame()
+//game socket
+import { io as client_io } from "socket.io-client";
+var connectionOptions = {
+  timeout: 10000, //before connect_error and connect_timeout are emitted.
+  transports: ["websocket"],
+};
+
+var clientSocket = client_io("https://test-igrica.onrender.com/", connectionOptions);
+
+socket.on("hi", () => {
+  alert("HELLO");
+});
+const thisGame = new DemoGame(clientSocket)
 const env = new GamePack(socket, thisGame)
 
 app.get('/', function (_req: any, res: { sendFile: (arg0: string) => void; }) {
