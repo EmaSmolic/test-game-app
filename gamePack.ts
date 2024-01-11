@@ -4,20 +4,19 @@ import { io as client_io } from "socket.io-client";
 
 export class GamePack {
 
-  private readonly serverSocket: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>;
+  private readonly server: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>;
   private controllers: Array<Controller>
 
-  constructor(serverSocket: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>) {
-    this.serverSocket = serverSocket
+  constructor(server: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>) {
+    this.server = server
     this.controllers = []
 
-    this.serverSocket.on('connection', client => {
-      console.log('connected', client.id)
-      this.serverSocket.sockets.emit("hi", "everyone");
+    this.server.on('connection', (socket)  => {
+      console.log('connected', socket.id)
+      this.server.sockets.emit("hi", "everyone");
 
-      this.serverSocket.on('hello_from_game' ,(client, data)=>console.log(client))
+      socket.on('hello_from_game' ,(client, data)=>console.log(client))
 
-      //this.socket.to(id).emit("my message", msg);
     });
 
     //subscribe to controller web service opening
