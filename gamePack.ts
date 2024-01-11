@@ -13,7 +13,6 @@ export class GamePack {
 
     this.server.on('connection', (socket)  => {
       console.log('connected', socket.id)
-      this.server.sockets.emit("hi", "everyone");
 
       socket.on('hello_from_game' ,(client)=>console.log(client))
 
@@ -54,10 +53,9 @@ export abstract class Game {
       transports: ["websocket"],
       autoConnect: false
     };
-    var client = client_io(serverAddress, connectionOptions);
-    this.client = client
+    var io = client_io(serverAddress, connectionOptions);
 
-    this.client.connect()
+    this.client = io.connect()
     //register as a game at env server
     this.client.emit('hello_from_game')
   }
