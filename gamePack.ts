@@ -61,7 +61,7 @@ export abstract class Game {
 
     this.clientSocket.connect()
     //register as a game at env server
-    this.clientSocket.emit('hello_from_game')
+    this.clientSocket.emit('hello_from_game',this.clientSocket, )
   }
 
   public getSocket(): Socket<DefaultEventsMap, DefaultEventsMap> { return this.clientSocket }
