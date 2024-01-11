@@ -62,7 +62,7 @@ export abstract class Game {
     //this.client.emit('hello_from_game', 'some_data' )
   }
 
-  public getSocket(): Socket<DefaultEventsMap, DefaultEventsMap> { return this.clientSocket }
+  public getSocket(): Socket<DefaultEventsMap, DefaultEventsMap> { return this.client }
 
   //commonly waiting for the required number of controllers registered, maybe something else...
   public abstract checkStartCondition(gamePackContext: GamePack): Boolean
