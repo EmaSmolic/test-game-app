@@ -15,7 +15,7 @@ export class GamePack {
       console.log('connected', socket.id)
       this.server.sockets.emit("hi", "everyone");
 
-      socket.on('hello_from_game' ,(client, data)=>console.log(client))
+      socket.on('hello_from_game' ,(client)=>console.log(client))
 
     });
 
@@ -57,9 +57,9 @@ export abstract class Game {
     var client = client_io(serverAddress, connectionOptions);
     this.client = client
 
-    //this.client.connect()
+    this.client.connect()
     //register as a game at env server
-    //this.client.emit('hello_from_game', 'some_data' )
+    this.client.emit('hello_from_game')
   }
 
   public getSocket(): Socket<DefaultEventsMap, DefaultEventsMap> { return this.client }
