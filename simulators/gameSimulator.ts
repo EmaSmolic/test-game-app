@@ -22,6 +22,7 @@ var server = require('http').createServer(app)
 var socket = require('socket.io')(server, {'transports': [ 'websocket' ],})
 
 const env = new GamePack(socket)
+server.listen(8000)
 const thisGame = new DemoGame("https://test-igrica.onrender.com/")
 
 app.set('view engine', 'ejs');
@@ -30,4 +31,3 @@ app.get('/', function (req: any, res: any) {
   res.render('gameSimulator');
 });
 
-server.listen(8000)
