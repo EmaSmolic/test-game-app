@@ -1,12 +1,11 @@
 <head>
-  <script type="module">
-
-//gameClient.on('hello_game', () => alert('Im a game!')) 
+  <script type="text/javascript">
+    var gameClient = <%= data %>
+    gameClient.on('hello_game', () => alert('Im a game!'))
   </script>
 </head>
 <body>
   <button onclick="window.location.href='https://w3docs.com';">
     connect as controller
   </button>
-  <%= JSON.stringify(data) %>
 </body>
