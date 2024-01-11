@@ -1,6 +1,7 @@
 <head>
   <script type="text/javascript">
     var gameClient = <%= data %>
+    console.log(gameClient)
     gameClient.on('hello_game', () => alert('Im a game!'))
   </script>
 </head>
