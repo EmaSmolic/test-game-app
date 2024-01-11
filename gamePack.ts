@@ -45,8 +45,7 @@ export class GamePack {
 }
 
 export abstract class Game {
-  private readonly clientSocket: any
-
+  private readonly client: any
 
   constructor(serverAddress: string) {
     //game socket
@@ -55,12 +54,12 @@ export abstract class Game {
       transports: ["websocket"],
       autoConnect: false
     };
-    var clientSocket = client_io(serverAddress, connectionOptions);
-    this.clientSocket = clientSocket
+    var client = client_io(serverAddress, connectionOptions);
+    this.client = client
 
-    this.clientSocket.connect()
+    //this.client.connect()
     //register as a game at env server
-    this.clientSocket.emit('hello_from_game', 'some_data' )
+    //this.client.emit('hello_from_game', 'some_data' )
   }
 
   public getSocket(): Socket<DefaultEventsMap, DefaultEventsMap> { return this.clientSocket }
