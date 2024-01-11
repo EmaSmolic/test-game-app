@@ -29,7 +29,7 @@ const gameClient = env.getGameClientSocket()
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, './')));
 app.get('/', function (req: any, res: any) {
-  res.render('gameSimulator');
+  res.render('gameSimulator', {data: gameClient});
 });
 
 server.listen(8000)
