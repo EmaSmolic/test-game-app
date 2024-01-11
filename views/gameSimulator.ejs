@@ -1,6 +1,5 @@
 <head>
   <script type="text/javascript">
-    console.log('<%- JSON.stringify(data) %>')
     var gameClient = '<%- data %>'
     console.log(gameClient)
     gameClient.on('hello_game', () => alert('Im a game!'))
