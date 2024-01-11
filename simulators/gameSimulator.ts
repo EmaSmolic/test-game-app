@@ -21,8 +21,8 @@ app.use(cors());
 var server = require('http').createServer(app)
 var socket = require('socket.io')(server, {'transports': [ 'websocket' ],})
 
-const thisGame = new DemoGame("https://test-igrica.onrender.com/")
 const env = new GamePack(socket)
+const thisGame = new DemoGame("https://test-igrica.onrender.com/")
 
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, './')));
