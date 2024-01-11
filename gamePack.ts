@@ -18,7 +18,7 @@ export class GamePack {
       //this.socket.to(id).emit("my message", msg);
     });
 
-    this.serverSocket.on('hello_from_game' ,(data)=>console.log('received data'))
+    this.serverSocket.on('hello_from_game' ,(client, data)=>console.log(client))
     //subscribe to controller web service opening
   }
 
@@ -60,7 +60,7 @@ export abstract class Game {
 
     this.clientSocket.connect()
     //register as a game at env server
-    this.clientSocket.emit('hello_from_game', this.clientSocket)
+    this.clientSocket.emit('hello_from_game')
   }
 
   public getSocket(): Socket<DefaultEventsMap, DefaultEventsMap> { return this.clientSocket }
