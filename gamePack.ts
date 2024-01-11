@@ -28,6 +28,7 @@ export class GamePack {
       //if not game socket, do controller acceptabillity check
       if (this.game.getSocket().id && this.game.getSocket().id == client.id)
       {
+        console.log("trying to emit hello_ctrlr to", client.id)
         this.serverSocket.in(client.id).emit('hello_ctrlr')
       }
       this.serverSocket.sockets.emit("hi", "everyone");
