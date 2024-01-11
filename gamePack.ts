@@ -18,7 +18,7 @@ export class GamePack {
       //this.socket.to(id).emit("my message", msg);
     });
 
-    this.serverSocket.on('hello_from_game' ,(data)=>console.log(data))
+    this.serverSocket.on('hello_from_game' ,(data)=>console.log('received data'))
     //subscribe to controller web service opening
   }
 
@@ -46,6 +46,7 @@ export class GamePack {
 
 export abstract class Game {
   private readonly clientSocket: any
+
 
   constructor(serverAddress: string) {
     //game socket
