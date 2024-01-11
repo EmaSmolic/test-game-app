@@ -5,54 +5,35 @@ import { io as client_io } from "socket.io-client";
 export class GamePack {
 
   private readonly serverSocket: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>;
-  private readonly game: Game;
   private controllers: Array<Controller>
 
-  constructor(serverSocket: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>, game: Game) {
+  constructor(serverSocket: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>) {
     this.serverSocket = serverSocket
-    this.game = game
-
-    var connectionOptions = {
-      timeout: 10000, //before connect_error and connect_timeout are emitted.
-      transports: ["websocket"],
-        autoConnect: false
-    };
-    var clientSocket = client_io("https://test-igrica.onrender.com/", connectionOptions);
-    this.game.setSocket(clientSocket)
     this.controllers = []
 
     this.serverSocket.on('connection', client => {
       console.log('connected', client.id)
-      console.log(this.game.getSocket().id)
 
-      //if not game socket, do controller acceptabillity check
-      if (this.game.getSocket().id && this.game.getSocket().id != client.id)
-      {
-        console.log("trying to emit hello_ctrlr to", client.id)
-        this.serverSocket.in(client.id).emit('hello_ctrlr')
-      }
       this.serverSocket.sockets.emit("hi", "everyone");
       //this.socket.to(id).emit("my message", msg);
     });
-    clientSocket.connect()
 
+    this.serverSocket.on('hello_from_game' ,(data)=>console.log(data))
     //subscribe to controller web service opening
   }
-  
-  getGameClientSocket() {
-    return this.game.getSocket()
-  }
+
+
   //returns true if controller connected, false in case of controller rejection
   private onControllerServiceOpened(): Boolean {
     //return if rejected
-    if (!this.game.acceptNewController(this)) return false
+    //if (!acceptNewController(this)) return false
 
     //init new Controller with unique one-time temporary id
-    const ctrlrTid = this.game.generateTid(this)
-    const ctrlr = new Controller(ctrlrTid)
+   // const ctrlrTid = generateTid(this)
+   // const ctrlr = new Controller(ctrlrTid)
 
     //save it to controllers
-    this.controllers.push(ctrlr)
+  //  this.controllers.push(ctrlr)
     return true
 
   }
@@ -64,13 +45,24 @@ export class GamePack {
 }
 
 export abstract class Game {
-  private clientSocket: any
-  constructor() {
-    //this.clientSocket = clientSocket
+  private readonly clientSocket: any
+
+  constructor(serverAddress: string) {
+    //game socket
+    var connectionOptions = {
+      timeout: 10000, //before connect_error and connect_timeout are emitted.
+      transports: ["websocket"],
+      autoConnect: false
+    };
+    var clientSocket = client_io(serverAddress, connectionOptions);
+    this.clientSocket = clientSocket
+
+    this.clientSocket.connect()
+    //register as a game at env server
+    this.clientSocket.emit('hello_from_game', this.clientSocket)
   }
 
   public getSocket(): Socket<DefaultEventsMap, DefaultEventsMap> { return this.clientSocket }
-  public setSocket(clientSocket: any): void { this.clientSocket = clientSocket }
 
   //commonly waiting for the required number of controllers registered, maybe something else...
   public abstract checkStartCondition(gamePackContext: GamePack): Boolean

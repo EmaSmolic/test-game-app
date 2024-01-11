@@ -1,5 +1,6 @@
 import { GamePack } from '../gamePack';
 import { DemoGame } from './DemoGame'
+import { io as client_io } from "socket.io-client";
 
 const express = require('express')
 const app = express();
@@ -20,13 +21,8 @@ app.use(cors());
 var server = require('http').createServer(app)
 var socket = require('socket.io')(server, {'transports': [ 'websocket' ],})
 
-//game socket
-
-const thisGame = new DemoGame()
-const env = new GamePack(socket, thisGame)
-const gameClient = env.getGameClientSocket()
-
-gameClient.on('hello_game', () => console.log('Im a game!'))
+const thisGame = new DemoGame("https://test-igrica.onrender.com/")
+const env = new GamePack(socket)
 
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, './')));
