@@ -26,11 +26,12 @@ const thisGame = new DemoGame()
 const env = new GamePack(socket, thisGame)
 const gameClient = env.getGameClientSocket()
 
-const util = require('util');
+gameClient.on('hello_game', () => console.log('Im a game!'))
+
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, './')));
 app.get('/', function (req: any, res: any) {
-  res.render('gameSimulator', {data: util.inspect(gameClient)});
+  res.render('gameSimulator');
 });
 
 server.listen(8000)
