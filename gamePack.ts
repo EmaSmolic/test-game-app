@@ -13,12 +13,13 @@ export class GamePack {
 
     this.serverSocket.on('connection', client => {
       console.log('connected', client.id)
-
       this.serverSocket.sockets.emit("hi", "everyone");
+
+      this.serverSocket.on('hello_from_game' ,(client, data)=>console.log(client))
+
       //this.socket.to(id).emit("my message", msg);
     });
 
-    this.serverSocket.on('hello_from_game' ,(client, data)=>console.log(client))
     //subscribe to controller web service opening
   }
 
