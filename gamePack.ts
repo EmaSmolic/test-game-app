@@ -57,6 +57,7 @@ export abstract class Game {
     var connectionOptions = {
       timeout: 10000, //before connect_error and connect_timeout are emitted.
       transports: ["websocket"],
+      "force new connection": false,
     };
     this.socket = client_io(serverAddress, connectionOptions);
 
