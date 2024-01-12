@@ -23,7 +23,7 @@ var socket = require('socket.io')(server, {'transports': [ 'websocket' ],})
 
 const env = new GamePack(socket)
 server.listen(8000)
-const thisGame = new DemoGame("https://test-igrica.onrender.com/")
+const thisGame = new DemoGame("https://test-igrica.onrender.com/", "test_code")
 
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, './')));

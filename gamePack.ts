@@ -6,17 +6,34 @@ export class GamePack {
 
   private readonly server: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>;
   private controllers: Array<Controller>
+  private codeGamesocketid: Map<string,string> 
+  private codeCtrlrsocketid: Map<string,Array<string>> 
 
   constructor(server: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>) {
     this.server = server
     this.controllers = []
+    this.codeGamesocketid = new Map<string,string>()
+    this.codeCtrlrsocketid = new Map<string,Array<string>>()
 
     this.server.on('connection', (socket)  => {
       console.log('connected', socket.id)
       this.server.emit('hi')
 
-      socket.on('hello_from_game' , () => console.log('GAME', socket.id, socket.handshake.address))
-      socket.on('hello_from_ctrlr' , () => console.log('CONTROLLER', socket.id, socket.handshake.address))
+      socket.on('hello_from_game' , (code) => {
+        console.log('GAME', socket.id, socket.handshake.address)
+        this.codeGamesocketid.set(code, socket.id)
+      })
+      socket.on('hello_from_ctrlr' , (code) => {
+        var codeCtrlrs = this.codeCtrlrsocketid.get(code)
+
+        if (!codeCtrlrs) codeCtrlrs = []
+        codeCtrlrs.concat([socket.id])
+
+        this.codeCtrlrsocketid.set(code, codeCtrlrs)
+
+        console.log('CONTROLLER', socket.id, 'connected to game socket ', this.codeCtrlrsocketid.get(code))
+
+      })
 
     });
 
@@ -52,8 +69,10 @@ export class GamePack {
 
 export abstract class Game {
   private readonly socket: any
+  private readonly code : string
 
-  constructor(serverAddress: string) {
+  constructor(serverAddress: string, code : string) {
+    this.code = code
     //game socket
     var connectionOptions = {
       timeout: 10000, //before connect_error and connect_timeout are emitted.
@@ -65,7 +84,7 @@ export abstract class Game {
     //register as a game at env server
     this.socket.on('hi', () => {
       console.log('hello', this.socket.id)
-      this.socket.emit('hello_from_game')
+      this.socket.emit('hello_from_game', code)
     })
   }
 
