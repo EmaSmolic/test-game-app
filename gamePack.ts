@@ -56,8 +56,9 @@ export abstract class Game {
     this.socket = client_io(serverAddress, connectionOptions);
 
     //register as a game at env server
-    this.socket.on('hi', (args: any) => {
-      console.log(args)
+    this.socket.on('hi', () => {
+      console.log('hello')
+      this.socket.emit('hello_from_game')
     })
   }
 
