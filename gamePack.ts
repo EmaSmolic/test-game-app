@@ -19,6 +19,11 @@ export class GamePack {
 
     });
 
+    this.server.on('disconnect', () => {
+      this.server.removeAllListeners();
+   });
+   
+
     //subscribe to controller web service opening
   }
 
