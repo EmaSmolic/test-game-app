@@ -13,6 +13,7 @@ export class GamePack {
 
     this.server.on('connection', (socket)  => {
       console.log('connected', socket.id)
+      this.server.emit('hi')
 
       socket.on('hello_from_game' ,(client)=>console.log(client))
 
@@ -44,7 +45,7 @@ export class GamePack {
 }
 
 export abstract class Game {
-  private readonly client: any
+  private readonly socket: any
 
   constructor(serverAddress: string) {
     //game socket
@@ -55,12 +56,13 @@ export abstract class Game {
     };
     var io = client_io(serverAddress, connectionOptions);
 
-    this.client = io.connect()
+    this.socket = io.connect()
     //register as a game at env server
-    this.client.emit('hello_from_game')
+    this.socket.on('hi', () => console.log('hello'))
+    this.socket.emit('hello_from_game')
   }
 
-  public getSocket(): Socket<DefaultEventsMap, DefaultEventsMap> { return this.client }
+  public getSocket(): Socket<DefaultEventsMap, DefaultEventsMap> { return this.socket }
 
   //commonly waiting for the required number of controllers registered, maybe something else...
   public abstract checkStartCondition(gamePackContext: GamePack): Boolean
