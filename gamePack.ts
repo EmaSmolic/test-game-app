@@ -64,8 +64,8 @@ export abstract class Game {
 
     //register as a game at env server
     this.socket.on('hi', () => {
-      console.log('hello')
-      this.socket.emit('hello_from_game', this.socket.id)
+      console.log('hello', this.socket.id)
+      this.socket.emit('hello_from_game')
     })
   }
 
