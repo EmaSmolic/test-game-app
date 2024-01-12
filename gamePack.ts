@@ -52,11 +52,9 @@ export abstract class Game {
     var connectionOptions = {
       timeout: 10000, //before connect_error and connect_timeout are emitted.
       transports: ["websocket"],
-      autoConnect: false
     };
-    var io = client_io(serverAddress, connectionOptions);
+    this.socket = client_io(serverAddress, connectionOptions);
 
-    this.socket = io.connect()
     //register as a game at env server
     this.socket.on('hi', () => console.log('hello'))
     this.socket.emit('hello_from_game')
