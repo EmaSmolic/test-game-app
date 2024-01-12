@@ -31,7 +31,7 @@ export class GamePack {
 
         this.codeCtrlrsocketid.set(code, codeCtrlrs)
 
-        console.log('CONTROLLER', socket.id, 'connected to game socket ', this.codeGamesocketid.get(code))
+        console.log('CONTROLLER', socket.id, 'connected to game socket ', this.codeGamesocketid.get(code), this.codeGamesocketid)
 
       })
 
