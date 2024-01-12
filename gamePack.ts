@@ -23,7 +23,8 @@ export class GamePack {
         console.log('GAME', socket.id, socket.handshake.address, code)
         this.codeGamesocketid.set(code, socket.id)
       })
-      socket.on('hello_from_ctrlr' , (code) => {
+      socket.on('hello_from_ctrlr' , (code, callback) => {
+        if(!this.codeGamesocketid.get(code)) callback("reject")
         var codeCtrlrs = this.codeCtrlrsocketid.get(code)
 
         if (!codeCtrlrs) codeCtrlrs = []
@@ -31,8 +32,8 @@ export class GamePack {
 
         this.codeCtrlrsocketid.set(code, codeCtrlrs)
 
-        console.log('CONTROLLER', socket.id, 'connected to game socket ', this.codeGamesocketid.get(code), this.codeGamesocketid)
-
+        console.log('CONTROLLER', socket.id, 'connected to game socket', this.codeGamesocketid.get(code), this.codeGamesocketid)
+        callback("accept")
       })
 
     });
