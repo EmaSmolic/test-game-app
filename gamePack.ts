@@ -15,8 +15,8 @@ export class GamePack {
       console.log('connected', socket.id)
       this.server.emit('hi')
 
-      socket.on('hello_from_game' , () => console.log('GAME', socket.id, socket.nsp.sockets))
-      socket.on('hello_from_ctrlr' , () => console.log('CONTROLLER', socket.id, socket.nsp.sockets))
+      socket.on('hello_from_game' , () => console.log('GAME', socket.id, socket.nsp.sockets.keys()))
+      socket.on('hello_from_ctrlr' , () => console.log('CONTROLLER', socket.id, socket.nsp.sockets.keys()))
 
     });
 
