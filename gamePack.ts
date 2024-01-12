@@ -24,7 +24,11 @@ export class GamePack {
         this.codeGamesocketid.set(code, socket.id)
       })
       socket.on('hello_from_ctrlr' , (code) => {
-        if(!this.codeGamesocketid.get(code)) socket.emit('reject')
+        console.log(this.codeCtrlrsocketid)
+        if(!this.codeGamesocketid.get(code)) {
+          console.log('rejecting')
+          socket.emit('reject')
+        }
         else {
         var codeCtrlrs = this.codeCtrlrsocketid.get(code)
 
