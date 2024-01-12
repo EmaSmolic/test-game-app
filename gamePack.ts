@@ -20,7 +20,7 @@ export class GamePack {
       this.server.emit('hi')
 
       socket.on('hello_from_game' , (code) => {
-        console.log('GAME', socket.id, socket.handshake.address)
+        console.log('GAME', socket.id, socket.handshake.address, code)
         this.codeGamesocketid.set(code, socket.id)
       })
       socket.on('hello_from_ctrlr' , (code) => {
