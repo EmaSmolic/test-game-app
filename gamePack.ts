@@ -25,6 +25,7 @@ export class GamePack {
       })
       socket.on('hello_from_ctrlr' , (code) => {
         if(!this.codeGamesocketid.get(code)) socket.emit('reject')
+        else {
         var codeCtrlrs = this.codeCtrlrsocketid.get(code)
 
         if (!codeCtrlrs) codeCtrlrs = []
@@ -34,6 +35,7 @@ export class GamePack {
 
         console.log('CONTROLLER', socket.id, 'connected to game socket', this.codeGamesocketid.get(code), this.codeGamesocketid)
         socket.emit("accept")
+        }
       })
 
     });
