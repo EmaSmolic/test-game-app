@@ -26,7 +26,9 @@ server.listen(8000)
 const thisGame = new DemoGame("https://test-igrica.onrender.com/", "test_code")
 const thisCtrlr = new Controller("https://test-igrica.onrender.com/")
 
-thisCtrlr.tryConnecting("test_code")
+setTimeout(() => {
+  thisCtrlr.tryConnecting("test_code")
+}, 10000);
 
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, './')));
