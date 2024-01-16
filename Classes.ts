@@ -107,7 +107,7 @@ export abstract class RCA {
     //register as a RCA at env server
     this.socket.on('hi', () => {
       console.log('hello', this.socket.id)
-      this.socket.emit('hello_from_game', this.code)
+      this.socket.emit('rca_connection', this.code)
     })
   }
 
@@ -122,13 +122,30 @@ export abstract class RCA {
 }
 
 class Controller {
-  //temporary one-time id for a specific RCA run instance
-  public readonly tid: string
+  private readonly socket: any
 
-  public constructor(tid: string) {
-    this.tid = tid
+  public constructor(serverAddress: string) {
+    var connectionOptions = {
+      timeout: 10000, //before connect_error and connect_timeout are emitted.
+      transports: ["websocket"],
+      "force new connection": false,
+    };
+    this.socket = client_io(serverAddress, connectionOptions);
+
+    //register as a Controller at env server
+    this.socket.on('hi', () => {
+      console.log('hello', this.socket.id)
+      
+    })
   }
 
+  public async tryConnecting(auth_code : string) : Promise<boolean> {
+
+      const res = await this.socket.emit('ctrlr_connection_request', auth_code)
+      console.log(res)
+
+      return false
+  }
 }
 
 
