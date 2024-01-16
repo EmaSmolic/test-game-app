@@ -1,4 +1,4 @@
-import { GamePack } from '../Classes';
+import { Environment, Controller } from '../Classes';
 import { DemoGame } from './DemoGame'
 import { io as client_io } from "socket.io-client";
 
@@ -21,9 +21,10 @@ app.use(cors());
 var server = require('http').createServer(app)
 var socket = require('socket.io')(server, {'transports': [ 'websocket' ],})
 
-const env = new GamePack(socket)
+const env = new Environment(socket)
 server.listen(8000)
 const thisGame = new DemoGame("https://test-igrica.onrender.com/", "test_code")
+const thisCtrlr = new Controller("https://test-igrica.onrender.com/", "test_code")
 
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, './')));

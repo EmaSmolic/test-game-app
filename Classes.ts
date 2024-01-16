@@ -64,28 +64,9 @@ export class Environment {
 
   private async checkRCAControllerAccept(rca_socket_id: string): Promise<boolean> {
     // without timeout
-    const response = await this.server.sockets.in(rca_socket_id).emitWithAck('accept_controller')
+    const response = await this.server.sockets.in(rca_socket_id).emitWithAck('accept_controller?')
     console.log('CONTROLLER ACCEPT?', response)
-    return response
-  }
-
-  //returns true if controller connected, false in case of controller rejection
-  private onControllerServiceOpened(): Boolean {
-    //return if rejected
-    //if (!acceptNewController(this)) return false
-
-    //init new Controller with unique one-time temporary id
-    // const ctrlrTid = generateTid(this)
-    // const ctrlr = new Controller(ctrlrTid)
-
-    //save it to controllers
-    //  this.controllers.push(ctrlr)
-    return true
-
-  }
-
-  public getControllers() {
-    return this.controllers
+    return false
   }
 
 }
@@ -109,6 +90,8 @@ export abstract class RCA {
       console.log('hello', this.socket.id)
       this.socket.emit('rca_connection', this.code)
     })
+
+    this.socket.on('accept_controller?', (convo: { emit: (arg0: boolean) => any; }) => convo.emit(false))
   }
 
   public getSocket(): Socket<DefaultEventsMap, DefaultEventsMap> { return this.socket }
@@ -116,12 +99,11 @@ export abstract class RCA {
   //commonly waiting for the required number of controllers registered, maybe something else...
   public abstract checkStartCondition(EnvironmentContext: Environment): Boolean
   public abstract acceptNewController(EnvironmentContext: Environment): Boolean
-  public abstract generateTid(EnvironmentContext: Environment): string
 
 
 }
 
-class Controller {
+export class Controller {
   private readonly socket: any
 
   public constructor(serverAddress: string) {
