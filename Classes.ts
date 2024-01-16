@@ -24,6 +24,8 @@ export class Environment {
         this.rcas_codes.set(auth_code, socket.id)
       })
       socket.on('ctrlr_connection_request', async (auth_code) => {
+        console.log('CTRLR', socket.id, socket.handshake.address, auth_code)
+
         console.log(this.rcas_codes)
         //PRIMJER SLOŽENIJEG SLUČAJA ZA DIJAGRAM KOMUNIKACIJE
         if (!this.rcas_codes.get(auth_code)) {
