@@ -16,7 +16,6 @@ export class Environment {
     this.ctrlrs_codes = new Map<string, Array<string>>()
 
     this.server.on('connection', (socket) => {
-      console.log('connected', socket.id)
       this.server.emit('hi')
 
       socket.on('rca_connection', (auth_code) => {
@@ -42,7 +41,6 @@ export class Environment {
 
           //target RCA exists
           const target_rca = this.rcas_codes.get(auth_code)
-          console.log('CONTROLLER', socket.id, 'connected to RCA socket', target_rca, this.rcas_codes)
 
           if (target_rca && await this.checkRCAControllerAccept(target_rca))
             socket.emit("accept")
@@ -89,11 +87,13 @@ export abstract class RCA {
 
     //register as a RCA at env server
     this.socket.on('hi', () => {
-      console.log('hello', this.socket.id)
       this.socket.emit('rca_connection', this.code)
     })
 
-    this.socket.on('accept_controller?', (convo: { emit: (arg0: boolean) => any; }) => convo.emit(false))
+    this.socket.on('accept_controller?', (convo: { emit: (arg0: boolean) => any; }) => {
+      console.log('accept?')
+      convo.emit(false)
+    })
   }
 
   public getSocket(): Socket<DefaultEventsMap, DefaultEventsMap> { return this.socket }
@@ -119,16 +119,16 @@ export class Controller {
     //register as a Controller at env server
     this.socket.on('hi', () => {
       console.log('hello', this.socket.id)
-      
+
     })
   }
 
-  public async tryConnecting(auth_code : string) : Promise<boolean> {
+  public async tryConnecting(auth_code: string): Promise<boolean> {
 
-      const res = await this.socket.emit('ctrlr_connection_request', auth_code)
-      console.log(res)
+    const res = await this.socket.emit('ctrlr_connection_request', auth_code)
+    console.log(res)
 
-      return false
+    return false
   }
 }
 
