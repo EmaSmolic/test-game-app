@@ -1,4 +1,4 @@
-import { Game, GamePack } from "../gamePack"
+import { Game, GamePack } from "../Classes"
 
 //extend Game
 export class DemoGame extends Game {

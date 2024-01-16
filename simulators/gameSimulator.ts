@@ -1,4 +1,4 @@
-import { GamePack } from '../gamePack';
+import { GamePack } from '../Classes';
 import { DemoGame } from './DemoGame'
 import { io as client_io } from "socket.io-client";
 
