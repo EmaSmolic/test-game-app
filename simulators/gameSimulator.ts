@@ -28,7 +28,7 @@ const thisCtrlr = new Controller("https://test-igrica.onrender.com/")
 
 setTimeout(() => {
   thisCtrlr.tryConnecting("test_code")
-}, 10000);
+}, 20000);
 
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, './')));
