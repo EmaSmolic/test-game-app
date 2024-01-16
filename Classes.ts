@@ -22,6 +22,7 @@ export class Environment {
         console.log('RCA', socket.id, socket.handshake.address, auth_code)
         this.rcas_codes.set(auth_code, socket.id)
       })
+
       socket.on('ctrlr_connection_request', async (auth_code) => {
         console.log('CTRLR', socket.id, socket.handshake.address, auth_code)
 
@@ -41,32 +42,20 @@ export class Environment {
 
           //target RCA exists
           const target_rca = this.rcas_codes.get(auth_code)
-
-          if (target_rca && await this.checkRCAControllerAccept(target_rca))
-            socket.emit("accept")
-          else
-            socket.emit("reject")
-
+          
+          if (target_rca) this.server.sockets.in(target_rca).emit('accept_controller?')
         }
       })
 
-    });
+      socket.on('accept_controller_response', (response) => console.log('RESPONSE', response))
 
+    });
 
 
     this.server.on('disconnect', () => {
       this.server.removeAllListeners();
     });
 
-
-    //subscribe to controller web service opening
-  }
-
-  private async checkRCAControllerAccept(rca_socket_id: string): Promise<boolean> {
-    // without timeout
-    const response = await this.server.sockets.in(rca_socket_id).emitWithAck('accept_controller?')
-    console.log('CONTROLLER ACCEPT?', response)
-    return false
   }
 
 }
@@ -90,9 +79,9 @@ export abstract class RCA {
       this.socket.emit('rca_connection', this.code)
     })
 
-    this.socket.on('accept_controller?', (convo: { emit: (arg0: boolean) => any; }) => {
+    this.socket.on('accept_controller?', (convo: { emit: (arg0: string, arg1: boolean) => void; }) => {
       console.log('accept?')
-      convo.emit(false)
+      convo.emit('accept_controller_response', false)
     })
   }
 
