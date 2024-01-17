@@ -44,9 +44,9 @@ export class Environment {
 
           //target RCA exists
           const target_rca = this.rcas_codes.get(auth_code)
-          
-          if (target_rca) 
-          this.server.sockets.in(target_rca).emit('accept_controller?', socket.id)
+
+          if (target_rca)
+            this.server.sockets.in(target_rca).emit('accept_controller?', socket.id)
         }
       })
 
@@ -60,18 +60,28 @@ export class Environment {
         this.server.sockets.in(ctrlr_socket_id).emit('accept_controller_response', response)
       })
 
-      socket.on('control', (control_info:any) => {
+      socket.on('control', (control_info: any) => {
         this.ctrlrs_codes.get(socket.id)
         console.log(this.ctrlrs_rcas)
 
         const target_rca = this.ctrlrs_rcas.get(socket.id)
         const id = this.ctrlrs_ids.get(socket.id)
-console.log('control', id, control_info)
-        if (target_rca) 
-        this.server.sockets.in(target_rca).emit('control', id, control_info)
+        console.log('control', id, control_info)
+        if (target_rca)
+          this.server.sockets.in(target_rca).emit('control', id, control_info)
 
       })
 
+      socket.on('message', (message: any, id: (string | undefined)) => {
+
+        for (const ctrlr in this.ctrlrs_ids.keys()) {
+          if (!id || this.ctrlrs_ids.get(ctrlr) == id)
+            this.server.sockets.in(ctrlr).emit('message', message)
+        }
+
+
+
+      })
     });
 
 
@@ -102,19 +112,19 @@ export abstract class RCA {
       this.socket.emit('rca_connection', this.code)
     })
 
-    this.socket.on('accept_controller?', (ctrlr_socket_id : string) => {
+    this.socket.on('accept_controller?', (ctrlr_socket_id: string) => {
       console.log('accept?')
       this.socket.emit('accept_controller_response', ctrlr_socket_id, this.acceptNewController(), this.generateTempId())
     })
 
-    this.socket.on('control', (ctrlr_id : string, action_info : any) => {
+    this.socket.on('control', (ctrlr_id: string, action_info: any) => {
       console.log('ACTION RECEIVED')
       this.onAction(ctrlr_id, action_info)
     })
 
   }
-  public abstract onAction(source_temp_id: string, action_info: any) : void
-  public abstract generateTempId(): string 
+  public abstract onAction(source_temp_id: string, action_info: any): void
+  public abstract generateTempId(): string
 
   public getSocket(): Socket<DefaultEventsMap, DefaultEventsMap> { return this.socket }
 
@@ -122,10 +132,13 @@ export abstract class RCA {
   public abstract checkStartCondition(EnvironmentContext: Environment): Boolean
   public abstract acceptNewController(): Boolean
 
+  public sendMessage(message: any, ctrlr_temp_id: (string | undefined) = undefined) {
+    this.socket.emit('message', message, ctrlr_temp_id)
+  }
 
 }
 
-export class Controller {
+export abstract class Controller {
   private readonly socket: any
 
   public constructor(serverAddress: string) {
@@ -139,20 +152,23 @@ export class Controller {
     //register as a Controller at env server
     this.socket.on('hi', () => {
       console.log('hello', this.socket.id)
-
     })
 
-    this.socket.on('accept_controller_response', (response:boolean) => {
+    this.socket.on('accept_controller_response', (response: boolean) => {
       console.log('accept ctrlr?', response)
-
     })
-  
-  }
 
-  public tryConnecting(auth_code: string): void{
+    this.socket.on('message', (message: any) => {
+      this.onMessageReceived(message)
+    })
+
+  }
+  public abstract onMessageReceived(message: any) : void
+
+  public tryConnecting(auth_code: string): void {
     this.socket.emit('ctrlr_connection_request', auth_code)
   }
-  public sendControl(control_info:any) {
+  public sendControl(control_info: any) {
     this.socket.emit('control', control_info)
   }
 }

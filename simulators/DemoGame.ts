@@ -1,6 +1,6 @@
 import { RCA, Environment } from "../Classes"
 
-//extend Game
+//extend RCA
 export class DemoGame extends RCA {
     public onAction(source_temp_id: string, action_info: any): void {
       console.log('ACTION', source_temp_id, action_info)

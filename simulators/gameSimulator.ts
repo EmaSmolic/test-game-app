@@ -1,4 +1,5 @@
 import { Environment, Controller } from '../Classes';
+import { DemoController } from './DemoController';
 import { DemoGame } from './DemoGame'
 import { io as client_io } from "socket.io-client";
 
@@ -24,7 +25,7 @@ var socket = require('socket.io')(server, {'transports': [ 'websocket' ],})
 const env = new Environment(socket)
 server.listen(8000)
 const thisGame = new DemoGame("https://test-igrica.onrender.com/", "test_code")
-const thisCtrlr = new Controller("https://test-igrica.onrender.com/")
+const thisCtrlr = new DemoController("https://test-igrica.onrender.com/")
 
 setTimeout(() => {
   console.log('TRYING TO CONNECT')
