@@ -33,7 +33,7 @@ setTimeout(() => {
 
 setTimeout(() => {
   thisCtrlr.sendControl({type: 'some control'})
-}, 15000);
+}, 20000);
 
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, './')));
