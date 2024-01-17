@@ -62,6 +62,7 @@ export class Environment {
 
       socket.on('control', (control_info:any) => {
         this.ctrlrs_codes.get(socket.id)
+        console.log(this.ctrlrs_rcas)
 
         const target_rca = this.ctrlrs_rcas.get(socket.id)
         const id = this.ctrlrs_ids.get(socket.id)
