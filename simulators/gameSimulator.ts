@@ -27,8 +27,9 @@ const thisGame = new DemoGame("https://test-igrica.onrender.com/", "test_code")
 const thisCtrlr = new Controller("https://test-igrica.onrender.com/")
 
 setTimeout(() => {
+  console.log('TRYING TO CONNECT')
   thisCtrlr.tryConnecting("test_code")
-}, 20000);
+}, 10000);
 
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, './')));
