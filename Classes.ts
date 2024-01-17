@@ -5,14 +5,16 @@ import { io as client_io } from "socket.io-client";
 export class Environment {
 
   private readonly server: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>;
-  private controllers: Array<Controller>
   private rcas_codes: Map<string, string>
   private ctrlrs_codes: Map<string, Array<string>>
+  private ctrlrs_ids: Map<string, string>
+  private ctrlrs_rcas: Map<string, string>
 
   constructor(server: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>) {
     this.server = server
-    this.controllers = []
     this.rcas_codes = new Map<string, string>()
+    this.ctrlrs_ids = new Map<string, string>()
+    this.ctrlrs_rcas = new Map<string, string>()
     this.ctrlrs_codes = new Map<string, Array<string>>()
 
     this.server.on('connection', (socket) => {
@@ -48,9 +50,25 @@ export class Environment {
         }
       })
 
-      socket.on('accept_controller_response', (ctrlr_socket_id, response) => {
+      socket.on('accept_controller_response', (ctrlr_socket_id, response, temp_id) => {
         console.log('RESPONSE', response)
+        if (response == true) {
+          this.ctrlrs_ids.set(ctrlr_socket_id, temp_id)
+          this.ctrlrs_rcas.set(ctrlr_socket_id, socket.id)
+
+        }
         this.server.sockets.in(ctrlr_socket_id).emit('accept_controller_response', response)
+      })
+
+      socket.on('control', (control_info:any) => {
+        this.ctrlrs_codes.get(socket.id)
+
+        const target_rca = this.ctrlrs_rcas.get(socket.id)
+        const id = this.ctrlrs_ids.get(socket.id)
+
+        if (target_rca) 
+        this.server.sockets.in(target_rca).emit('control', id, control_info)
+
       })
 
     });
@@ -85,9 +103,16 @@ export abstract class RCA {
 
     this.socket.on('accept_controller?', (ctrlr_socket_id : string) => {
       console.log('accept?')
-      this.socket.emit('accept_controller_response', ctrlr_socket_id, this.acceptNewController())
+      this.socket.emit('accept_controller_response', ctrlr_socket_id, this.acceptNewController(), this.generateTempId())
     })
+
+    this.socket.on('action', (ctrlr_id : string, action_info : any) => {
+      this.onAction(ctrlr_id, action_info)
+    })
+
   }
+  public abstract onAction(source_temp_id: string, action_info: any) : void
+  public abstract generateTempId(): string 
 
   public getSocket(): Socket<DefaultEventsMap, DefaultEventsMap> { return this.socket }
 
@@ -123,9 +148,10 @@ export class Controller {
   }
 
   public tryConnecting(auth_code: string): void{
-
     this.socket.emit('ctrlr_connection_request', auth_code)
-
+  }
+  public sendControl(control_info:any) {
+    this.socket.emit('control', control_info)
   }
 }
 
