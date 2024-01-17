@@ -79,9 +79,9 @@ export abstract class RCA {
       this.socket.emit('rca_connection', this.code)
     })
 
-    this.socket.on('accept_controller?', (convo: { emit: (arg0: string, arg1: boolean) => void; }) => {
+    this.socket.on('accept_controller?', () => {
       console.log('accept?')
-      convo.emit('accept_controller_response', false)
+      this.socket.emit('accept_controller_response', false)
     })
   }
 
