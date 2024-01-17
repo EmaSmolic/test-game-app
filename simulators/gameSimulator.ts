@@ -36,6 +36,9 @@ setTimeout(() => {
   thisCtrlr.sendControl({type: 'some control'})
 }, 20000);
 
+setTimeout(() => {
+  thisGame.sendMessage({message: 'hello'})
+}, 30000);
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, './')));
 app.get('/', function (req: any, res: any) {
