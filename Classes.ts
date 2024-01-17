@@ -72,10 +72,10 @@ export class Environment {
 
       })
 
-      socket.on('message', (message: any, id: (string | undefined)) => {
+      socket.on('message', (message: any, id: (string | null)) => {
 console.log('MESSAGE ON ENV', message, id)
         for (const ctrlr in this.ctrlrs_ids.keys()) {
-          //check if sent to that id (include all if id is undefined) AND if this ctrlr socket corresponds to this RCA socket
+          //check if sent to that id (include all if id is null) AND if this ctrlr socket corresponds to this RCA socket
           if ((!id || this.ctrlrs_ids.get(ctrlr) == id) && this.ctrlrs_rcas.get(ctrlr) == socket.id)
             this.server.sockets.in(ctrlr).emit('message', message)
         }
