@@ -110,13 +110,18 @@ export class Controller {
       console.log('hello', this.socket.id)
 
     })
+
+    this.socket.on('accept_controller_response', (response:boolean) => {
+      console.log('accept ctrlr?', response)
+
+    })
+  
   }
 
-  public tryConnecting(auth_code: string): boolean{
+  public tryConnecting(auth_code: string): void{
 
     this.socket.emit('ctrlr_connection_request', auth_code)
 
-    return false
   }
 }
 
