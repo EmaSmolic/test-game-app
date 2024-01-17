@@ -106,7 +106,7 @@ export abstract class RCA {
       this.socket.emit('accept_controller_response', ctrlr_socket_id, this.acceptNewController(), this.generateTempId())
     })
 
-    this.socket.on('action', (ctrlr_id : string, action_info : any) => {
+    this.socket.on('control', (ctrlr_id : string, action_info : any) => {
       this.onAction(ctrlr_id, action_info)
     })
 
