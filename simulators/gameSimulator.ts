@@ -31,6 +31,10 @@ setTimeout(() => {
   thisCtrlr.tryConnecting("test_code")
 }, 10000);
 
+setTimeout(() => {
+  thisCtrlr.sendControl({type: 'some control'})
+}, 15000);
+
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, './')));
 app.get('/', function (req: any, res: any) {
