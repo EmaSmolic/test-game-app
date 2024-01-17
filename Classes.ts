@@ -43,11 +43,15 @@ export class Environment {
           //target RCA exists
           const target_rca = this.rcas_codes.get(auth_code)
           
-          if (target_rca) this.server.sockets.in(target_rca).emit('accept_controller?')
+          if (target_rca) 
+          this.server.sockets.in(target_rca).emit('accept_controller?', socket.id)
         }
       })
 
-      socket.on('accept_controller_response', (response) => console.log('RESPONSE', response))
+      socket.on('accept_controller_response', (ctrlr_socket_id, response) => {
+        console.log('RESPONSE', response)
+        this.server.sockets.in(ctrlr_socket_id).emit('accept_controller_response', response)
+      })
 
     });
 
@@ -79,9 +83,9 @@ export abstract class RCA {
       this.socket.emit('rca_connection', this.code)
     })
 
-    this.socket.on('accept_controller?', () => {
+    this.socket.on('accept_controller?', (ctrlr_socket_id : string) => {
       console.log('accept?')
-      this.socket.emit('accept_controller_response', false)
+      this.socket.emit('accept_controller_response', ctrlr_socket_id, false)
     })
   }
 
