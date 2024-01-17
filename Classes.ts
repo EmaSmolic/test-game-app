@@ -108,6 +108,7 @@ export abstract class RCA {
     })
 
     this.socket.on('control', (ctrlr_id : string, action_info : any) => {
+      console.log('ACTION RECEIVED')
       this.onAction(ctrlr_id, action_info)
     })
 
