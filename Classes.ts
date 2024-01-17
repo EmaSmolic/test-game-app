@@ -66,7 +66,7 @@ export class Environment {
 
         const target_rca = this.ctrlrs_rcas.get(socket.id)
         const id = this.ctrlrs_ids.get(socket.id)
-
+console.log('control', id, control_info)
         if (target_rca) 
         this.server.sockets.in(target_rca).emit('control', id, control_info)
 
