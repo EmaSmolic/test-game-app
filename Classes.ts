@@ -85,7 +85,7 @@ export abstract class RCA {
 
     this.socket.on('accept_controller?', (ctrlr_socket_id : string) => {
       console.log('accept?')
-      this.socket.emit('accept_controller_response', ctrlr_socket_id, false)
+      this.socket.emit('accept_controller_response', ctrlr_socket_id, this.acceptNewController())
     })
   }
 
@@ -93,7 +93,7 @@ export abstract class RCA {
 
   //commonly waiting for the required number of controllers registered, maybe something else...
   public abstract checkStartCondition(EnvironmentContext: Environment): Boolean
-  public abstract acceptNewController(EnvironmentContext: Environment): Boolean
+  public abstract acceptNewController(): Boolean
 
 
 }
