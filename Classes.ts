@@ -112,10 +112,9 @@ export class Controller {
     })
   }
 
-  public async tryConnecting(auth_code: string): Promise<boolean> {
+  public tryConnecting(auth_code: string): boolean{
 
-    const res = await this.socket.emit('ctrlr_connection_request', auth_code)
-    console.log(res)
+    this.socket.emit('ctrlr_connection_request', auth_code)
 
     return false
   }
