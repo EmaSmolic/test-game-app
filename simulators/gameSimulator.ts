@@ -24,9 +24,8 @@ var socket = require('socket.io')(server, {'transports': [ 'websocket' ],})
 const env = new Environment(socket)
 server.listen(8000)
 
-app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, './')));
 app.get('/', function (req: any, res: any) {
-  res.render('gameSimulator');
+  res.send('env server');
 });
 
