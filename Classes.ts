@@ -25,7 +25,7 @@ export class Environment {
         this.rcas_codes.set(auth_code, socket.id)
       })
 
-      socket.on('ctrlr_connection_request', async (auth_code) => {
+      socket.on('ctrlr_connection_request', (auth_code) => {
         console.log('CTRLR', socket.id, socket.handshake.address, auth_code)
 
         console.log(this.rcas_codes)
@@ -76,11 +76,9 @@ export class Environment {
         console.log('MESSAGE ON ENV', message, id)
         console.log(id, this.ctrlrs_ids.keys(), this.ctrlrs_rcas, socket.id)
         for (const [ctrlr, ctrlr_id] of this.ctrlrs_ids) {
-          console.log(ctrlr)
           //check if sent to that id (include all if id is null) AND if this ctrlr socket corresponds to this RCA socket
-          console.log(this.ctrlrs_rcas)
 
-          if ((!id || ctrlr_id == id) && ctrlr_id == socket.id)
+          if ((!id || ctrlr_id == id) && this.ctrlrs_rcas.get(ctrlr_id) == socket.id)
             this.server.sockets.in(ctrlr).emit('message', message)
         }
 
