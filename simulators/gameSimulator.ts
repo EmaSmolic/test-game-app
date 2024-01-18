@@ -1,6 +1,5 @@
-import { Environment, Controller } from '../../Classes';
-import { DemoController } from './DemoController';
-import { DemoGame } from './DemoGame'
+import { Environment, Controller } from '../Classes';
+
 import { io as client_io } from "socket.io-client";
 
 const express = require('express')
