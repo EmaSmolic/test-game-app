@@ -73,8 +73,8 @@ export class Environment {
       })
 
       socket.on('message', (message: any, id: (string | null)) => {
-console.log('MESSAGE ON ENV', message, id)
-console.log(id, this.ctrlrs_ids.keys(), this.ctrlrs_rcas)
+        console.log('MESSAGE ON ENV', message, id)
+        console.log(id, this.ctrlrs_ids.keys(), this.ctrlrs_rcas)
         for (const ctrlr in this.ctrlrs_ids.keys()) {
           console.log(ctrlr)
           //check if sent to that id (include all if id is null) AND if this ctrlr socket corresponds to this RCA socket
@@ -168,7 +168,7 @@ export abstract class Controller {
     })
 
   }
-  public abstract onMessageReceived(message: any) : void
+  public abstract onMessageReceived(message: any): void
 
   public tryConnecting(auth_code: string): void {
     this.socket.emit('ctrlr_connection_request', auth_code)
