@@ -74,8 +74,9 @@ export class Environment {
 
       socket.on('message', (message: any, id: (string | null)) => {
         console.log('MESSAGE ON ENV', message, id)
-        console.log(id, this.ctrlrs_ids.keys(), this.ctrlrs_rcas)
-        for (const ctrlr in this.ctrlrs_ids.keys()) {
+        console.log(id, this.ctrlrs_ids.keys(), this.ctrlrs_rcas, socket.id)
+        const ctrlrs = this.ctrlrs_ids.keys()
+        for (const ctrlr in ctrlrs) {
           console.log(ctrlr)
           //check if sent to that id (include all if id is null) AND if this ctrlr socket corresponds to this RCA socket
           console.log(this.ctrlrs_rcas)
