@@ -78,7 +78,7 @@ export class Environment {
         for (const [ctrlr, ctrlr_id] of this.ctrlrs_ids) {
           //check if sent to that id (include all if id is null) AND if this ctrlr socket corresponds to this RCA socket
 
-          if ((!id || ctrlr_id == id) && this.ctrlrs_rcas.get(ctrlr_id) == socket.id)
+          if ((!id || ctrlr_id == id) && this.ctrlrs_rcas.get(ctrlr) == socket.id)
             this.server.sockets.in(ctrlr).emit('message', message)
         }
 
