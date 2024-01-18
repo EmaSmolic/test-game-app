@@ -20,12 +20,12 @@ export class Environment {
     this.server.on('connection', (socket) => {
       this.server.emit('hi')
 
-      socket.on('rca_connection', (auth_code) => {
+      socket.on('rca_connection', (auth_code: string) => {
         console.log('RCA', socket.id, socket.handshake.address, auth_code)
         this.rcas_codes.set(auth_code, socket.id)
       })
 
-      socket.on('ctrlr_connection_request', (auth_code) => {
+      socket.on('ctrlr_connection_request', (auth_code: string) => {
         console.log('CTRLR', socket.id, socket.handshake.address, auth_code)
 
         console.log(this.rcas_codes)
@@ -50,7 +50,7 @@ export class Environment {
         }
       })
 
-      socket.on('accept_controller_response', (ctrlr_socket_id, response, temp_id) => {
+      socket.on('accept_controller_response', (ctrlr_socket_id: string, response: Boolean, temp_id: string) : void=> {
         console.log('RESPONSE', response)
         if (response == true) {
           this.ctrlrs_ids.set(ctrlr_socket_id, temp_id)
